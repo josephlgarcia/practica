@@ -9,8 +9,9 @@ export async function cargarUsuarios() {
     const usuarios = [];
 
     return new Promise((resolve, reject) => {
-        fs.createReadStream(rutaArchivo)
-            .pipe(csv())
+        fs.createReadStream(rutaArchivo).pipe(csv({
+            mapHeaders: ( {header} ) => header.replace('\ufeff', '')
+        }))
             .on("data", (fila) => {
                 usuarios.push([
                     fila.nombre_completo,

@@ -9,8 +9,9 @@ export async function cargarPrestamos() {
     const prestamos = [];
 
     return new Promise((resolve, reject) => {
-        fs.createReadStream(rutaArchivo)
-            .pipe(csv())
+        fs.createReadStream(rutaArchivo).pipe(csv({
+            mapHeaders: ( {header} ) => header.replace('\ufeff', '')
+        }))
             .on("data", (fila) => {
                 prestamos.push([
                     fila.id_usuario,
